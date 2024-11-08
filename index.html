@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dark Elf - Mobilní zobrazení</title>
     <style>
+        /* Základní reset stylů */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             overflow: hidden;
+            font-family: Arial, sans-serif;
         }
+        /* Iframe nastavíme na plnou šířku a výšku */
         iframe {
             width: 100%;
             height: 100vh;
@@ -24,43 +27,48 @@
         document.getElementById("darkElfFrame").onload = function() {
             const iframeDoc = document.getElementById("darkElfFrame").contentWindow.document;
 
-            // Základní prvky, které by měly být skryty
-            const header = iframeDoc.getElementById('header');
-            const personLeft = iframeDoc.getElementById('person_left');
-            const personRight = iframeDoc.getElementById('person_right');
-            const adElements = iframeDoc.querySelectorAll("[id*='ad'], [id*='reklama'], [id*='partners']");
+            // Skryjeme nepotřebné prvky, které nejsou pro hratelnost nutné
+            const elementsToHide = [
+                'header', 'person_left', 'person_right', 'column-b', 'column-stat', 
+                'partners', 'footer', 'ad', 'reklama'
+            ];
+            elementsToHide.forEach(id => {
+                const el = iframeDoc.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
 
-            if (header) header.style.display = 'none';
-            if (personLeft) personLeft.style.display = 'none';
-            if (personRight) personRight.style.display = 'none';
+            // Skryjeme další prvky dle tříd a specifických atributů, které mohou obsahovat reklamy
+            const adElements = iframeDoc.querySelectorAll("[id*='ad'], [id*='reklama'], [class*='ad'], [class*='promo']");
             adElements.forEach(ad => ad.style.display = 'none');
 
-            // Přizpůsobení rozložení hlavního obsahu
+            // Přizpůsobíme hlavní obsah stránky
             const content = iframeDoc.getElementById('content');
             if (content) {
                 content.style.width = '100%';
                 content.style.margin = '0';
                 content.style.padding = '0';
+                content.style.fontSize = '1em';
             }
 
-            // Přizpůsobení tlačítek pro mobilní zobrazení
+            // Optimalizace tlačítek pro mobilní rozhraní
             const buttons = iframeDoc.querySelectorAll('#buttons img');
             buttons.forEach(btn => {
-                btn.style.width = '100%';
-                btn.style.padding = '12px';
+                btn.style.width = '95%';
+                btn.style.padding = '15px';
                 btn.style.fontSize = '1.2em';
                 btn.style.borderRadius = '8px';
                 btn.style.backgroundColor = '#4CAF50';
                 btn.style.color = 'white';
+                btn.style.margin = '5px auto';
+                btn.style.display = 'block';
             });
 
-            // Přizpůsobení formuláře na přihlašovací stránce, pokud je přítomen
+            // Optimalizace přihlašovacího formuláře
             const loginForm = iframeDoc.querySelector("form[name='login']");
             if (loginForm) {
                 loginForm.style.width = '90%';
                 loginForm.style.margin = '0 auto';
                 loginForm.style.fontSize = '1.2em';
-
                 const inputs = loginForm.querySelectorAll("input");
                 inputs.forEach(input => {
                     input.style.width = '100%';
@@ -68,26 +76,27 @@
                     input.style.marginBottom = '10px';
                     input.style.borderRadius = '5px';
                 });
-
                 const submitButton = loginForm.querySelector("input[type='submit']");
                 if (submitButton) {
                     submitButton.style.backgroundColor = '#4CAF50';
                     submitButton.style.color = 'white';
                     submitButton.style.border = 'none';
-                    submitButton.style.padding = '12px';
-                    submitButton.style.fontSize = '1.2em';
+                    submitButton.style.padding = '15px';
                     submitButton.style.width = '100%';
+                    submitButton.style.fontSize = '1.2em';
                 }
             }
 
-            // Pokud je přítomna mapa nebo obsah hry, přizpůsobte její zobrazení
+            // Přizpůsobení herní mapy
             const map = iframeDoc.getElementById("map");
             if (map) {
                 map.style.width = '100%';
                 map.style.height = 'auto';
                 map.style.border = '1px solid #ccc';
+                map.style.margin = '10px 0';
             }
 
+            // Změna stylu herního obsahu
             const gameContent = iframeDoc.querySelector(".game_content");
             if (gameContent) {
                 gameContent.style.width = '100%';
