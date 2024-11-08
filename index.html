@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Elf - Mobilní zobrazení</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100vh;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <iframe src="https://www.darkelf.cz" id="darkElfFrame"></iframe>
+    <script>
+        document.getElementById("darkElfFrame").onload = function() {
+            const iframe = document.getElementById("darkElfFrame").contentWindow.document;
+            const header = iframe.getElementById('header');
+            const personLeft = iframe.getElementById('person_left');
+            const personRight = iframe.getElementById('person_right');
+            const adElements = iframe.querySelectorAll("[id*='ad'], [id*='reklama'], [id*='partners']");
+            
+            if (header) header.style.display = 'none';
+            if (personLeft) personLeft.style.display = 'none';
+            if (personRight) personRight.style.display = 'none';
+            adElements.forEach(ad => ad.style.display = 'none');
+        };
+    </script>
+</body>
+</html>
